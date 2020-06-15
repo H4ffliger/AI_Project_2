@@ -1,22 +1,28 @@
 
 
-function Square(x,y,sizeX,sizeY){
+function Square(x,y,sizeX,sizeY, fruitB=false){
 	this.position = createVector(x, y);
 	this.sizeX = sizeX;
 	this.sizeY = sizeY;
-
+	this.fruitB = fruitB;
 	this.update = function(){
 
 	}
 
 	this.show = function(){
-		fill(255, 50);
+		push();
+		fill(255, 50)
+		if(fruitB){
+			fill(255, 0, 0, 100)
+		}
 		rect(this.position.x, this.position.y, this.sizeX, this.sizeY);
+		pop();
 	}
 
-	this.hits = function(bird){
-		if(bird.x > this.x && bird.x < this.x + this.size){
-			if(bird.y < this.top || bird.y > this.top + this.gap){
+
+	this.hits = function(playerPos){
+		if(playerPos.x > this.position.x && playerPos.x < this.position.x + this.sizeX){
+			if(playerPos.y > this.position.y && playerPos.y < this.position.y + this.sizeY){
 				return true;
 			}
 		}

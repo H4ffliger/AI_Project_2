@@ -5,13 +5,13 @@ class Player{
 	this.rotation = 0;
 	this.size = 32;
 	this.viewLength = 200;
-	this.speed = 0;
+	this.speed = 0.5;
 	this.score = 0;
 	this.fitness = 0;
 	this.seeDistance = [];
 	this.seeObject = [];
 	this.position = createVector(x, y);
-	
+	this.inputs = [];
 
 	if(brain){
 		this.brain = brain.copy();
@@ -26,7 +26,7 @@ class Player{
     	push();
     	translate(this.position.x, this.position.y);
     	strokeWeight(3);
-    	stroke(0, 255, 0);
+    	stroke(0, 255, 0, 125);
 
 
     	//0 Degrees
@@ -37,9 +37,26 @@ class Player{
     	}
 
 		stroke(255);
+		stroke(255, 255);
 		fill(255, 40);
 		ellipse(0,0, this.size*1, this.size*1);
-		pop();
+		
+
+		//Show red line when player sees wall
+		for(var j = 0; j < 5; j++){
+			if(this.inputs[j] != this.viewLength){
+    			var dx = this.inputs[j] * cos(this.rotation + j *-45);
+    			var dy = this.inputs[j] * sin(this.rotation + j *-45);
+    			if(this.inputs[j+5] == 0){
+    				stroke(255, 0, 0, 125);
+    			}
+    			else{
+    				stroke(0, 0, 255, 125);
+    			}
+    			line(0,0, dx, dy);
+    		}
+    	}
+    	pop();
 	}
 
 	mutate(mutateRate){
@@ -48,38 +65,80 @@ class Player{
 
 
 	see(){
-		this.seeDistance[0] = 1;
-	}
-
-
-	think(){
-
-		var inputs = [];
-		inputs[0] = this.rotation;
-		for(var i = 1; i < 11; i++){
-			inputs[i] = this.rotation;
+		this.inputs = [];
+		for(var i = 0; i < 10; i++){
+			this.inputs[i] = 0;
 		}
 
-		this.moveOutput = [];
-		this.moveOutput = this.brain.predict(inputs);
+		for(var i = 0; i < 5; i++){
+			this.inputs[i] = this.viewLength;
+		}
+
+		for(var t = this.viewLength; t >= 0; t-=20){
+			for(var j = 0; j < 5; j++){
+    			var dx = t * cos(this.rotation + j *-45);
+    			var dy = t * sin(this.rotation + j *-45);
+    			var testVector = createVector(this.position.x +dx, this.position.y + dy);
+    			if(levelManager.squareHitCheck(testVector)){
+    				this.inputs[j] = t;
+    				this.inputs[j+5] = 0;
+    			}
+    		}
+    	}
+
+    	for(var t = this.viewLength; t >= 0; t-=20){
+			for(var j = 0; j < 5; j++){
+    			var dx = t * cos(this.rotation + j *-45);
+    			var dy = t * sin(this.rotation + j *-45);
+    			var testVector = createVector(this.position.x +dx, this.position.y + dy);
+    			if(levelManager.fruitsHitCheck(testVector)){
+    				if(t < this.inputs[j]){
+    				this.inputs[j] = t;
+    				this.inputs[j+5] = 1;
+    			}
+    			}
+    		}
+    	}
+
 	}
 
-	collision(){
-		this.score ++;
+	think(){
+		//Inputs 0-4 = distance
+		//Inputs 5-9 = object // 0 = Wall // 1 = Fruit
+		//inputs 10 = rotation
+		//this.inputs[10] = this.rotation;
+		
+		this.inputs[10] = this.rotation;
+
+
+		this.moveOutput = [];
+		//Output 0 = rotation change
+		//output 1 = speed
+		this.moveOutput = this.brain.predict(this.inputs);
+	}
+
+	collision(playerSelf){
+		if(levelManager.squareHitCheck(this.position)){
+			return true;
+		}
+		if(levelManager.fruitsHitCheck(this.position, playerSelf)){
+			score += 10;
+			return true;
+		}
+		//this.score ++;
+		return false;
 	}
 
 	move(){
 
 		//update position
-		var speedX = this.speed * cos(this.rotation + -90);
-    	var speedY = this.speed * sin(this.rotation + -90);
+		var speedX = this.moveOutput[1] * cos(this.rotation -90);
+    	var speedY = this.moveOutput[1] * sin(this.rotation -90);
 		var velocity = createVector(speedX, speedY);
     	this.position.add(velocity);
-    	console.log("Moving the player" + speedY);
 
-		/*if(moveOutput[0]){
-			this.w;
-		}
-		this.velocity = -14;*/
+
+    	this.rotation += this.moveOutput[0]*2-1;
+		
 	}
 }
