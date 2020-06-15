@@ -7,6 +7,7 @@ var total_fitness = 0;
 var slider;
 
 function setup (){
+	angleMode(DEGREES);
 	createCanvas(1000, 1000);
 	slider = createSlider(1, 500, 1);
 	for(var i = 0; i < TOTAL_POP; i++){

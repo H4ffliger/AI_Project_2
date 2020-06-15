@@ -4,10 +4,11 @@ class Player{
 	this.moveOutput = [];
 	this.y = 200;
 	this.x = 500;
-	this.rotation = 0;
+	this.rotation = random(0);
 	this.velocityX = 0;
 	this.velocityY = 0;
 	this.size = 32;
+	this.viewLength = 200;
 	this.score = 0;
 	this.fitness = 0;
 	this.seeDistance = [];
@@ -27,17 +28,20 @@ class Player{
 	show(){
     	push();
     	translate(this.position.x, this.position.y);
-    	rotate(this.rotation);
+    	strokeWeight(3);
     	stroke(0, 255, 0);
-    	line(-100, 0, 0, 0);
-    	line(-75, -75, 0, 0);
-    	line(0, -100, 0, 0);
-    	line(75, -75, 0, 0);
-    	line(100, 0, 0, 0);
+
+
+    	//0 Degrees
+    	for(var j = 0; j < 5; j++){
+    		var dx = this.viewLength * cos(this.rotation + j *-45);
+    		var dy = this.viewLength * sin(this.rotation + j *-45);
+    		line(0,0, dx, dy);
+    	}
 
 		stroke(255);
 		fill(255, 40);
-		ellipse(0,0, this.size*1, this.size*1.2);
+		ellipse(0,0, this.size*1, this.size*1);
 		pop();
 	}
 
