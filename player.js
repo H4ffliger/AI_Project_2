@@ -2,13 +2,10 @@ class Player{
 
 	constructor(x, y, brain){
 	this.moveOutput = [];
-	this.y = 200;
-	this.x = 500;
-	this.rotation = random(0);
-	this.velocityX = 0;
-	this.velocityY = 0;
+	this.rotation = 0;
 	this.size = 32;
 	this.viewLength = 200;
+	this.speed = 0;
 	this.score = 0;
 	this.fitness = 0;
 	this.seeDistance = [];
@@ -20,7 +17,7 @@ class Player{
 		this.brain = brain.copy();
 	}
 	else{
-		this.brain = new NeuralNetwork(10,6,8,6,2);
+		this.brain = new NeuralNetwork(11,11,15,11,2);
 	}
 }
 
@@ -57,28 +54,29 @@ class Player{
 
 	think(){
 
-		var inputs = [1,1,1,1,1, 1,1,1,1,1];
+		var inputs = [];
+		inputs[0] = this.rotation;
+		for(var i = 1; i < 11; i++){
+			inputs[i] = this.rotation;
+		}
+
 		this.moveOutput = [];
 		this.moveOutput = this.brain.predict(inputs);
 	}
 
 	collision(){
-		this.y += this.velocity;
-
-		this.velocity += 0.5;
-
-		if(this.velocity > 16){
-			this.velocity = 16;
-		}
-
-		if(this.y > height - this.size/2){
-			this.y = height - this.size/2;
-		}
-
 		this.score ++;
 	}
 
 	move(){
+
+		//update position
+		var speedX = this.speed * cos(this.rotation + -90);
+    	var speedY = this.speed * sin(this.rotation + -90);
+		var velocity = createVector(speedX, speedY);
+    	this.position.add(velocity);
+    	console.log("Moving the player" + speedY);
+
 		/*if(moveOutput[0]){
 			this.w;
 		}

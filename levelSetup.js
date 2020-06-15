@@ -3,18 +3,19 @@ function LevelSetup(){
 
 
 	this.createSquares = function(){
-		console.log("Create the squares.");
-		squares.push(new Square(0, 0, 50, 800));
-		squares.push(new Square(900, 0, 50, 800));
+		squares.push(new Square(0, 0, 1000, 50));
+		squares.push(new Square(0, 0, 50, 1000));
+		squares.push(new Square(950, 0, 50, 1000));
 		squares.push(new Square(50, 200, 300, 50));
-		squares.push(new Square(600, 200, 300, 50));
+		squares.push(new Square(650, 200, 300, 50));
 		squares.push(new Square(50, 400, 600, 50));
-		squares.push(new Square(500, 700, 400, 50));
+		squares.push(new Square(550, 700, 400, 50));
+		squares.push(new Square(0, 950, 1000, 50));
+
 	}
 
 	this.showSquares = function(){
 		for(var s = squares.length -1; s >= 0; s--){
-			console.log("Draw the squares.");
 			squares[s].show();
 		}
 	}
