@@ -1,4 +1,4 @@
-const TOTAL_POP = 350;
+const TOTAL_POP = 1;
 var players = [];
 var savedPlayers = [];
 var score = 0;
@@ -10,7 +10,7 @@ function setup (){
 	createCanvas(1000, 1000);
 	slider = createSlider(1, 500, 1);
 	for(var i = 0; i < TOTAL_POP; i++){
-		players[i] = new Player();
+		players[i] = new Player(random(500), 800);
 	}
 
 }
@@ -23,9 +23,9 @@ function draw(){
 	for(var c = 0; c < slider.value(); c ++){
 
 	for(var j = players.length -1; j >= 0; j--){
-		if(pipes[i].hits(players[j])){
+		/*if(pipes[i].hits(players[j])){
 			savedPlayers.push(players.splice(j, 1)[0]);
-			}
+			}*/
 	}
 	
 

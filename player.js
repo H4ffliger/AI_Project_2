@@ -1,7 +1,7 @@
 class Player{
 
 	constructor(x, y, brain){
-	this.move = [];
+	this.moveOutput = [];
 	this.y = 200;
 	this.x = 500;
 	this.rotation = 0;
@@ -19,7 +19,7 @@ class Player{
 		this.brain = brain.copy();
 	}
 	else{
-		this.brain = new NeuralNetwork(10,6,8,6,1);
+		this.brain = new NeuralNetwork(10,6,8,6,2);
 	}
 }
 
@@ -27,9 +27,17 @@ class Player{
 	show(){
     	push();
     	translate(this.position.x, this.position.y);
+    	rotate(this.rotation);
+    	stroke(0, 255, 0);
+    	line(-100, 0, 0, 0);
+    	line(-75, -75, 0, 0);
+    	line(0, -100, 0, 0);
+    	line(75, -75, 0, 0);
+    	line(100, 0, 0, 0);
+
 		stroke(255);
 		fill(255, 40);
-		ellipse(this.x, this.y, this.size*2, this.size);
+		ellipse(0,0, this.size*1, this.size*1.2);
 		pop();
 	}
 
@@ -39,23 +47,15 @@ class Player{
 
 
 	see(){
-		this.seeDistance[0] = 
-
+		this.seeDistance[0] = 1;
 	}
 
 
 	think(){
 
-
-		var inputs = [];
-
-		inputs[0] = this.y / height;
-		inputs[1] = closest.x / width;
-		inputs[2] = closest.top / height;
-		inputs[3] = this.velocity / 16;
-		move = [];
-		output = this.brain.predict(inputs);
-		move = output;
+		var inputs = [1,1,1,1,1, 1,1,1,1,1];
+		this.moveOutput = [];
+		this.moveOutput = this.brain.predict(inputs);
 	}
 
 	collision(){
@@ -75,9 +75,9 @@ class Player{
 	}
 
 	move(){
-		if(move[0]){
-			this.
+		/*if(moveOutput[0]){
+			this.w;
 		}
-		this.velocity = -14;
+		this.velocity = -14;*/
 	}
 }
