@@ -1,19 +1,16 @@
 const TOTAL_POP = 350;
-var birds = [];
-var savedBirds = [];
-var pipeCountDownMax = 100;
-var pipeCountDown = 0;
-var pipes = [];
+var players = [];
+var savedPlayers = [];
 var score = 0;
 var generation = 0;
 var total_fitness = 0;
 var slider;
 
 function setup (){
-	createCanvas(800, windowHeight);
+	createCanvas(1000, 1000);
 	slider = createSlider(1, 500, 1);
 	for(var i = 0; i < TOTAL_POP; i++){
-		birds[i] = new Bird();
+		players[i] = new Player();
 	}
 
 }
@@ -24,35 +21,24 @@ function draw(){
 
 
 	for(var c = 0; c < slider.value(); c ++){
-	if(pipeCountDown <1){
-		pipes.push(new Pipe());
-		pipeCountDown = pipeCountDownMax;
-	}
-	pipeCountDown -=1;
 
-	for(var i = pipes.length -1; i >= 0; i--){
-		pipes[i].update();
-		if(pipes[i].x < -100){
-			score +=1;
-			pipes.splice(i, 1);
-		}
-
-		for(var j = birds.length -1; j >= 0; j--){
-			if(pipes[i].hits(birds[j])){
-				savedBirds.push(birds.splice(j, 1)[0]);
+	for(var j = players.length -1; j >= 0; j--){
+		if(pipes[i].hits(players[j])){
+			savedPlayers.push(players.splice(j, 1)[0]);
 			}
-		}
 	}
-	for(var i = birds.length -1; i >= 0; i--){
-	birds[i].think(pipes);
-	birds[i].gravity();
+	
+
+	for(var i = players.length -1; i >= 0; i--){
+		players[i].see();
+		players[i].think();
+		players[i].move();
+		players[i].collision();
+
 	}
 
 
-	if(birds.length == 0){
-		pipes = [];
-		pipes.push(new Pipe());
-		pipeCountDown = pipeCountDownMax;
+	if(players.length == 0){
 		score = 0;
 		nextGeneration();
 		break;
@@ -61,11 +47,8 @@ function draw(){
 
 	//Drawing
 	background(51);
-	for(var i = pipes.length -1; i >= 0; i--){
-		pipes[i].show();
-	}
-	for(var i = birds.length -1; i >= 0; i--){
-		birds[i].show();
+	for(var i = players.length -1; i >= 0; i--){
+		players[i].show();
 	}
 
 
