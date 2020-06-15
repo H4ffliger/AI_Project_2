@@ -5,15 +5,18 @@ var score = 0;
 var generation = 0;
 var total_fitness = 0;
 var slider;
+var levelManager;
 
 function setup (){
 	angleMode(DEGREES);
 	createCanvas(1000, 1000);
 	slider = createSlider(1, 500, 1);
 	for(var i = 0; i < TOTAL_POP; i++){
-		players[i] = new Player(random(500), 800);
+		players[i] = new Player(400, 920);
 	}
 
+	levelManager = new LevelSetup();
+	levelManager.createSquares();
 }
 
 
@@ -48,6 +51,7 @@ function draw(){
 
 	//Drawing
 	background(51);
+	levelManager.showSquares();
 	for(var i = players.length -1; i >= 0; i--){
 		players[i].show();
 	}
@@ -58,6 +62,4 @@ function draw(){
 	text("Generation: " + generation, 100, 60);	
 	text("Fitness: " + total_fitness, 100, 100);
 	text("Speed: " + int(slider.value()), 100, 140);	
-
-
 }
