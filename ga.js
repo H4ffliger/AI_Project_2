@@ -5,14 +5,14 @@ function nextGeneration(){
 	calculateFitness();
 
 	for(var i = 0; i < TOTAL_POP; i++){
-		players[i] = pickOne();
+		players[i] = pickOne(i);
 	}
 	savedPlayers = [];
 	generation ++;
 }
 
 
-function pickOne(){
+function pickOne(i){
 	var index = 0;
 	var r = random(1);
 	while (r > 0){ 
@@ -24,7 +24,7 @@ function pickOne(){
 
 	var player = savedPlayers[index];
 
-	var child = new Player(300, 720, player.brain);
+	var child = new Player(300, 720, i, player.brain);
 	child.mutate(0.1);
 	return child;
 }

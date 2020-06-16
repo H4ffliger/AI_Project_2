@@ -1,6 +1,6 @@
 function LevelSetup(){
 	var squares = [];
-	var fruitsAmont = 10;
+	var fruitsAmont = TOTAL_POP;
 	var fruits = [];
 	var playerScored = [];
 
@@ -10,10 +10,6 @@ function LevelSetup(){
 		squares.push(new Square(0, 0, 1000, 50));
 		squares.push(new Square(0, 0, 50, 1000));
 		squares.push(new Square(950, 0, 50, 1000));
-		squares.push(new Square(50, 200, 300, 50));
-		squares.push(new Square(650, 200, 300, 50));
-		squares.push(new Square(50, 400, 600, 50));
-		squares.push(new Square(550, 700, 400, 50));
 		squares.push(new Square(0, 950, 1000, 50));
 	}
 
@@ -21,12 +17,12 @@ function LevelSetup(){
 		fruits = [];
 		for(var s = fruitsAmont -1; s >= 0; s--){
 			var fx = random(50, 950);
-			var fy = random(50, 950);
+			var fy = random(50, 400);
 			if(levelManager.squareHitCheck(createVector(fx, fy)) == false){
-				fruits.push(new Square(fx, fy, 50, 50, true));
+				fruits.push(new Square(fx, fy, 50, 50, true, s));
 			}
 			else{
-				s --;
+				s ++;
 			}
 		}
 	}
@@ -53,9 +49,9 @@ function LevelSetup(){
 	}
 
 
-	this.fruitsHitCheck = function(playerPos, player){
+	this.fruitsHitCheck = function(playerPos, player, sID){
 		for(var s = fruits.length -1; s >= 0; s--){
-			if(fruits[s].hits(playerPos)){
+			if(fruits[s].hits(playerPos, sID)){
 				if(player){
 					fruits.splice(s,1);
 				}

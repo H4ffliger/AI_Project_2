@@ -1,10 +1,11 @@
 
 
-function Square(x,y,sizeX,sizeY, fruitB=false){
+function Square(x,y,sizeX,sizeY, fruitB=false, sID=false){
 	this.position = createVector(x, y);
 	this.sizeX = sizeX;
 	this.sizeY = sizeY;
 	this.fruitB = fruitB;
+	this.id = sID;
 	this.update = function(){
 
 	}
@@ -20,13 +21,25 @@ function Square(x,y,sizeX,sizeY, fruitB=false){
 	}
 
 
-	this.hits = function(playerPos){
-		if(playerPos.x > this.position.x && playerPos.x < this.position.x + this.sizeX){
-			if(playerPos.y > this.position.y && playerPos.y < this.position.y + this.sizeY){
-				return true;
+	this.hits = function(playerPos, sID=-1){
+		if(sID > -1){
+			if(sID == this.id){
+				if(playerPos.x > this.position.x && playerPos.x < this.position.x + this.sizeX){
+					if(playerPos.y > this.position.y && playerPos.y < this.position.y + this.sizeY){
+						return true;
+					}
+				}
 			}
+			return false;
 		}
-		return false;
+		else{
+			if(playerPos.x > this.position.x && playerPos.x < this.position.x + this.sizeX){
+				if(playerPos.y > this.position.y && playerPos.y < this.position.y + this.sizeY){
+					return true;
+				}
+			}
+			return false;
+		}
 	}
 
 }

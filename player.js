@@ -1,23 +1,24 @@
 class Player{
 
-	constructor(x, y, brain){
+	constructor(x, y, i, brain){
 	this.moveOutput = [];
 	this.rotation = 0;
 	this.size = 32;
-	this.viewLength = 200;
-	this.speed = 0.5;
-	this.score = 0;
+	this.viewLength = 250;
+	this.speed = 1;
+	this.score = 10;
 	this.fitness = 0;
 	this.seeDistance = [];
 	this.seeObject = [];
 	this.position = createVector(x, y);
 	this.inputs = [];
+	this.id = i;
 
 	if(brain){
 		this.brain = brain.copy();
 	}
 	else{
-		this.brain = new NeuralNetwork(11,11,15,11,2);
+		this.brain = new NeuralNetwork(11,11,11,2);
 	}
 }
 
@@ -91,7 +92,7 @@ class Player{
     			var dx = t * cos(this.rotation + j *-45);
     			var dy = t * sin(this.rotation + j *-45);
     			var testVector = createVector(this.position.x +dx, this.position.y + dy);
-    			if(levelManager.fruitsHitCheck(testVector)){
+    			if(levelManager.fruitsHitCheck(testVector, false, this.id)){
     				if(t < this.inputs[j]){
     				this.inputs[j] = t;
     				this.inputs[j+5] = 1;
@@ -119,11 +120,12 @@ class Player{
 
 	collision(playerSelf){
 		if(levelManager.squareHitCheck(this.position)){
+			score -= 10;
 			return true;
 		}
-		if(levelManager.fruitsHitCheck(this.position, playerSelf)){
-			score += 10;
-			return true;
+		if(levelManager.fruitsHitCheck(this.position, true, this.id)){
+			this.score += 1000;
+			return false;
 		}
 		//this.score ++;
 		return false;
@@ -138,7 +140,7 @@ class Player{
     	this.position.add(velocity);
 
 
-    	this.rotation += this.moveOutput[0]*2-1;
+    	this.rotation += this.moveOutput[0]*4-2;
 		
 	}
 }

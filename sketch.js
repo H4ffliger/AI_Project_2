@@ -1,4 +1,4 @@
-const TOTAL_POP = 10;
+const TOTAL_POP = 20;
 var players = [];
 var savedPlayers = [];
 var score = 0;
@@ -6,7 +6,7 @@ var generation = 0;
 var total_fitness = 0;
 var slider;
 var levelManager;
-var timerMax = 500;
+var timerMax = 750;
 var timer = timerMax;
 
 
@@ -15,7 +15,7 @@ function setup (){
 	createCanvas(1000, 1000);
 	slider = createSlider(1, 500, 1);
 	for(var i = 0; i < TOTAL_POP; i++){
-		players[i] = new Player(300, 720);
+		players[i] = new Player(300, 720, i);
 	}
 
 	levelManager = new LevelSetup();
