@@ -6,7 +6,7 @@ var generation = 0;
 var total_fitness = 0;
 var slider;
 var levelManager;
-var timerMax = 750;
+var timerMax = 1000;
 var timer = timerMax;
 
 

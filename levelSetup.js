@@ -1,6 +1,6 @@
 function LevelSetup(){
 	var squares = [];
-	var fruitsAmont = TOTAL_POP;
+	var fruitsAmont = 4;
 	var fruits = [];
 	var playerScored = [];
 
@@ -15,14 +15,16 @@ function LevelSetup(){
 
 	this.createFruits = function(){;
 		fruits = [];
-		for(var s = fruitsAmont -1; s >= 0; s--){
-			var fx = random(50, 950);
-			var fy = random(50, 400);
-			if(levelManager.squareHitCheck(createVector(fx, fy)) == false){
-				fruits.push(new Square(fx, fy, 50, 50, true, s));
-			}
-			else{
-				s ++;
+		for(x = 0; x < fruitsAmont; x ++){
+			for(var s = TOTAL_POP -1; s >= 0; s--){
+				var fx = random(50, 950);
+				var fy = random(50, 400);
+				if(levelManager.squareHitCheck(createVector(fx, fy)) == false){
+					fruits.push(new Square(fx, fy, 50, 50, true, s));
+				}
+				else{
+					s ++;
+				}
 			}
 		}
 	}

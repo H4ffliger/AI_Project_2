@@ -6,7 +6,7 @@ class Player{
 	this.size = 32;
 	this.viewLength = 250;
 	this.speed = 1;
-	this.score = 10;
+	this.score = 1;
 	this.fitness = 0;
 	this.seeDistance = [];
 	this.seeObject = [];
@@ -120,7 +120,6 @@ class Player{
 
 	collision(playerSelf){
 		if(levelManager.squareHitCheck(this.position)){
-			score -= 10;
 			return true;
 		}
 		if(levelManager.fruitsHitCheck(this.position, true, this.id)){
